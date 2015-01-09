@@ -3,6 +3,7 @@ package com.example.usuario.easytaxitacna2_taxista;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,13 +35,26 @@ public class MapActivity extends ActionBarActivity {
     //Añadiendo nuevo mapa de Google Maps
     GoogleMap map;
     Location location;
+    Marker marker;
+    int i;
+
+
+
     String SERVER_URL = "https://aqueous-escarpment-1930.herokuapp.com/SEND";
 
+
+
+    private MyBroadcastReceiver myBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        myBroadcastReceiver = new MyBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(GCMNotificationIntentService.ACTION_MyIntentService);
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(myBroadcastReceiver, intentFilter);
 
         getGoogleMap();
     }
@@ -167,6 +184,37 @@ public class MapActivity extends ActionBarActivity {
         catch (Exception e)
         {
             Toast.makeText(getApplicationContext(),"No se pudo obtener mapa",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void AddMarker(LatLng latLng){
+
+        marker = map.addMarker(new MarkerOptions().position(latLng)
+                .title("Marker " + i)
+                .draggable(true));
+        i++;
+    }
+
+    Double longitude,latitude;
+
+    public class MyBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //Accciones que se ejecutaran cuando se recibe nueva data desde el IntentService
+
+            //Obtiene latitud y altitud como una sola cadena y luego lo separa
+            String result = intent.getStringExtra(GCMNotificationIntentService.EXTRA_KEY_OUT);
+
+            String [] campos = result.split("\\s+");
+
+            latitude = Double.parseDouble(campos[0]);
+            longitude = Double.parseDouble(campos[1]);
+
+            //Transformar latitude and longitude en objeto LatLng y se genera marcador
+            LatLng latLng = new LatLng(latitude,longitude);
+            AddMarker(latLng);
         }
     }
 

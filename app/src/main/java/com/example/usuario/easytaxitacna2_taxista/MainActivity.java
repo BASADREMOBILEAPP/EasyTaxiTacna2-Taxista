@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
     String regId;
     AsyncTask<Void, Void, String> shareRegidTask;
     static final String TAG = "Register Activity";
-    private MyBroadcastReceiver myBroadcastReceiver;
+    //private MyBroadcastReceiver myBroadcastReceiver;
 
 
     @Override
@@ -57,11 +57,11 @@ public class MainActivity extends ActionBarActivity {
         appUtil = new ShareExternalServer();
 
 
-        //Recibe data enviada desde IntentService
+        /*//Recibe data enviada desde IntentService
         myBroadcastReceiver = new MyBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(GCMNotificationIntentService.ACTION_MyIntentService);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        registerReceiver(myBroadcastReceiver, intentFilter);
+        registerReceiver(myBroadcastReceiver, intentFilter);*/
 
 
 
@@ -192,7 +192,7 @@ public class MainActivity extends ActionBarActivity {
         editor.commit();
     }
 
-    Double longitude,latitude;
+/*    Double longitude,latitude;
 
     public class MyBroadcastReceiver extends BroadcastReceiver {
 
@@ -209,6 +209,6 @@ public class MainActivity extends ActionBarActivity {
 
             Toast.makeText(getApplicationContext(),campos[0] + "\n" + campos[1],Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 
 }
