@@ -17,6 +17,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GCMNotificationIntentService extends IntentService {
 
+    public static final String ACTION_MyIntentService = "RESPONSE";
+    public static final String EXTRA_KEY_OUT = "EXTRA_OUT";
 	public static final int NOTIFICATION_ID = 1;
 	private NotificationManager mNotificationManager;
 	NotificationCompat.Builder builder;
@@ -33,7 +35,8 @@ public class GCMNotificationIntentService extends IntentService {
 		Bundle extras = intent.getExtras();
 		GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
 
-		String messageType = gcm.getMessageType(intent);
+
+        String messageType = gcm.getMessageType(intent);
 
 		if (!extras.isEmpty()) {
 			if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR
@@ -63,6 +66,16 @@ public class GCMNotificationIntentService extends IntentService {
 				Log.i(TAG, "Received: " + extras.toString());
 			}
 		}
+
+
+
+        //return result
+        Intent intentResponse = new Intent();
+        intentResponse.setAction(ACTION_MyIntentService);
+        intentResponse.addCategory(Intent.CATEGORY_DEFAULT);
+        intentResponse.putExtra(EXTRA_KEY_OUT, extras.get(Config.MESSAGE_KEY).toString());
+        sendBroadcast(intentResponse);
+
 		GcmBroadcastReceiver.completeWakefulIntent(intent);
 	}
 

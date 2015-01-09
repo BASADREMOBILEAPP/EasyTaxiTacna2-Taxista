@@ -3,7 +3,6 @@ package com.example.usuario.easytaxitacna2_taxista;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -33,26 +32,16 @@ public class MapActivity extends ActionBarActivity {
     GoogleMap map;
     Location location;
     String SERVER_URL = "https://aqueous-escarpment-1930.herokuapp.com/SEND";
-    private IntentFilter myFilter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
         getGoogleMap();
     }
 
-
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String myParam = intent.getExtras().getString("parameter");
-            if (myParam != null) {
-                //Aquí ejecutais el método que necesiteis, por ejemplo actualizar //el número de notificaciones recibidas
-
-            }
-        }
-    };
     public void SendMessage(final String message){
 
 
@@ -180,4 +169,8 @@ public class MapActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(),"No se pudo obtener mapa",Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+
 }

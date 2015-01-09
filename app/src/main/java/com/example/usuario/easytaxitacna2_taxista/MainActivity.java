@@ -1,7 +1,9 @@
 package com.example.usuario.easytaxitacna2_taxista;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -43,6 +45,8 @@ public class MainActivity extends ActionBarActivity {
     String regId;
     AsyncTask<Void, Void, String> shareRegidTask;
     static final String TAG = "Register Activity";
+    private MyBroadcastReceiver myBroadcastReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,11 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
         appUtil = new ShareExternalServer();
+        myBroadcastReceiver = new MyBroadcastReceiver();
+
+        IntentFilter intentFilter = new IntentFilter(GCMNotificationIntentService.ACTION_MyIntentService);
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(myBroadcastReceiver, intentFilter);
 
         if (TextUtils.isEmpty(regId)) {
             regId = registerGCM();
@@ -176,6 +185,15 @@ public class MainActivity extends ActionBarActivity {
         editor.putString(REG_ID, regId);
         editor.putInt(APP_VERSION, appVersion);
         editor.commit();
+    }
+
+    public class MyBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String result = intent.getStringExtra(GCMNotificationIntentService.EXTRA_KEY_OUT);
+            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+        }
     }
 
 }
