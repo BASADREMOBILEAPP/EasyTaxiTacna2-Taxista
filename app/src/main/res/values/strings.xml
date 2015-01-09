@@ -4,5 +4,7 @@
     <string name="app_name">EasyTaxiTacna2-Taxista</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_blank">blankActivity</string>
 
 </resources>

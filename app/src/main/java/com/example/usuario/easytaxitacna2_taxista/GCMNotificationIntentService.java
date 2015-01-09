@@ -1,10 +1,13 @@
 package com.example.usuario.easytaxitacna2_taxista;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -23,6 +26,7 @@ public class GCMNotificationIntentService extends IntentService {
 	}
 
 	public static final String TAG = "GCMNotificationIntentService";
+
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
@@ -47,7 +51,7 @@ public class GCMNotificationIntentService extends IntentService {
 							"Working... " + (i + 1) + "/5 @ "
 									+ SystemClock.elapsedRealtime());
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(0);
 					} catch (InterruptedException e) {
 					}
 
@@ -55,6 +59,7 @@ public class GCMNotificationIntentService extends IntentService {
 				Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
 
 				sendNotification(" " + extras.get(Config.MESSAGE_KEY));
+
 				Log.i(TAG, "Received: " + extras.toString());
 			}
 		}
@@ -62,6 +67,7 @@ public class GCMNotificationIntentService extends IntentService {
 	}
 
 	private void sendNotification(String msg) {
+        Uri sonido = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		Log.d(TAG, "Preparing to send notification...: " + msg);
 		mNotificationManager = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -73,7 +79,7 @@ public class GCMNotificationIntentService extends IntentService {
 				this).setSmallIcon(R.drawable.ic_launcher)
 				.setContentTitle("GCM Notification")
 				.setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-				.setContentText(msg);
+				.setContentText(msg).setSound(sonido);
 
 		mBuilder.setContentIntent(contentIntent);
 		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
