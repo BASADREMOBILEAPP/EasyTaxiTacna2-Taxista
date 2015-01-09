@@ -67,9 +67,7 @@ public class GCMNotificationIntentService extends IntentService {
 			}
 		}
 
-
-
-        //return result
+        //Enviar intent con data a un broadcast
         Intent intentResponse = new Intent();
         intentResponse.setAction(ACTION_MyIntentService);
         intentResponse.addCategory(Intent.CATEGORY_DEFAULT);

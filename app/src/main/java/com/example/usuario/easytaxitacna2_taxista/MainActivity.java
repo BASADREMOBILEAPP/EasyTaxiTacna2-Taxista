@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.StringTokenizer;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -54,11 +55,15 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         context = getApplicationContext();
         appUtil = new ShareExternalServer();
-        myBroadcastReceiver = new MyBroadcastReceiver();
 
+
+        //Recibe data enviada desde IntentService
+        myBroadcastReceiver = new MyBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(GCMNotificationIntentService.ACTION_MyIntentService);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(myBroadcastReceiver, intentFilter);
+
+
 
         if (TextUtils.isEmpty(regId)) {
             regId = registerGCM();
@@ -187,12 +192,22 @@ public class MainActivity extends ActionBarActivity {
         editor.commit();
     }
 
+    Double longitude,latitude;
+
     public class MyBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            //Obtiene latitud y altitud como una sola cadena y luego lo separa
             String result = intent.getStringExtra(GCMNotificationIntentService.EXTRA_KEY_OUT);
-            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+
+            String [] campos = result.split("\\s+");
+
+            latitude = Double.parseDouble(campos[0]);
+            longitude = Double.parseDouble(campos[1]);
+
+            Toast.makeText(getApplicationContext(),campos[0] + "\n" + campos[1],Toast.LENGTH_LONG).show();
         }
     }
 
