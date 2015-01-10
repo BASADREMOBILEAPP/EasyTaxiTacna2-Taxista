@@ -36,13 +36,9 @@ public class MapActivity extends ActionBarActivity {
     GoogleMap map;
     Location location;
     Marker marker;
-    int i;
-
-
+    int i,j=0;
 
     String SERVER_URL = "https://aqueous-escarpment-1930.herokuapp.com/SEND";
-
-
 
     private MyBroadcastReceiver myBroadcastReceiver;
 
@@ -50,6 +46,7 @@ public class MapActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
 
         myBroadcastReceiver = new MyBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(GCMNotificationIntentService.ACTION_MyIntentService);
@@ -72,8 +69,8 @@ public class MapActivity extends ActionBarActivity {
             @Override
             protected void onPostExecute(String result) {
                 shareRegidTask = null;
-                Toast.makeText(getApplicationContext(), result,
-                        Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), result,
+                //        Toast.LENGTH_LONG).show();
             }
 
         };
@@ -84,7 +81,7 @@ public class MapActivity extends ActionBarActivity {
     public String SendServerMessage(String message){
 
         JSONArray values = new JSONArray();
-        values.put("user1");
+        values.put("taxista1");
         //JSON PRINCIPAL (MENSAJE)
         JSONObject JsonMessage = new JSONObject();
 
@@ -175,9 +172,9 @@ public class MapActivity extends ActionBarActivity {
                     Double longitude = _location.getLongitude();
 
                     //Enviar localizacion del usuario como string compuesto de altitud y latitud
-                    String message = Double.toString(latitude) + "\n"  +Double.toString(longitude) ;
+                    String message = Double.toString(latitude) + " "  +Double.toString(longitude) ;
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                    SendMessage(message);
+                    //SendMessage(message);
                 }
             });
         }
@@ -195,12 +192,17 @@ public class MapActivity extends ActionBarActivity {
         i++;
     }
 
+    public void RemoveMarker(){
+        marker.remove();
+    }
+
     Double longitude,latitude;
 
     public class MyBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
 
             //Accciones que se ejecutaran cuando se recibe nueva data desde el IntentService
 
@@ -209,12 +211,28 @@ public class MapActivity extends ActionBarActivity {
 
             String [] campos = result.split("\\s+");
 
-            latitude = Double.parseDouble(campos[0]);
-            longitude = Double.parseDouble(campos[1]);
 
-            //Transformar latitude and longitude en objeto LatLng y se genera marcador
-            LatLng latLng = new LatLng(latitude,longitude);
-            AddMarker(latLng);
+            if(j==0){
+
+                latitude = Double.parseDouble(campos[0]);
+                longitude = Double.parseDouble(campos[1]);
+
+                //Transformar latitude and longitude en objeto LatLng y se genera marcador
+                LatLng latLng = new LatLng(latitude,longitude);
+                AddMarker(latLng);
+                j++;
+            }
+
+            else{
+                RemoveMarker();
+                latitude = Double.parseDouble(campos[0]);
+                longitude = Double.parseDouble(campos[1]);
+
+                //Transformar latitude and longitude en objeto LatLng y se genera marcador
+                LatLng latLng = new LatLng(latitude,longitude);
+                AddMarker(latLng);
+            }
+
         }
     }
 

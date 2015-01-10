@@ -56,14 +56,11 @@ public class MainActivity extends ActionBarActivity {
         context = getApplicationContext();
         appUtil = new ShareExternalServer();
 
-
         /*//Recibe data enviada desde IntentService
         myBroadcastReceiver = new MyBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(GCMNotificationIntentService.ACTION_MyIntentService);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(myBroadcastReceiver, intentFilter);*/
-
-
 
         if (TextUtils.isEmpty(regId)) {
             regId = registerGCM();
