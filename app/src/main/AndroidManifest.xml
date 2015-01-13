@@ -62,6 +62,10 @@
             android:name=".blankActivity"
             android:label="@string/title_activity_blank" >
         </activity>
+        <activity
+            android:name=".Registrarse"
+            android:label="@string/title_activity_registrarse" >
+        </activity>
     </application>
 
 </manifest>

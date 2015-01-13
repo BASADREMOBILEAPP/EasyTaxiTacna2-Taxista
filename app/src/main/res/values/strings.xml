@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_blank">blankActivity</string>
+    <string name="title_activity_registrarse">Registrarse</string>
 
 </resources>
